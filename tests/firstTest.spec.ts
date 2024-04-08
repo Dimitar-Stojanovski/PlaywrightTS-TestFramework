@@ -1,4 +1,5 @@
 import {expect, test} from '@playwright/test'
+import exp from 'constants'
 
 
 
@@ -83,6 +84,49 @@ test('Reusing locators', async({page})=>{
   await basicForm.getByRole('button',{name:"Submit"}).click()
 
   await expect(emailField).toHaveValue('test@test.com')
+
+})
+
+test('Extracting values from elements', async ({page}) => {
+  
+  //Single text value
+  const basicForm =  page.locator('nb-card').filter({hasText:"Basic Form"})
+  const buttonText = await basicForm.locator('button').textContent()
+  expect(buttonText).toEqual('Submit')
+
+  //all text values
+  const allRadioBtnsLables = await page.locator('nb-radio').allTextContents()
+  expect(allRadioBtnsLables).toContain('Option 1')
+
+  // input value
+  const emailField = basicForm.getByRole('textbox', {name:'Email'});
+  await emailField.fill('test@test.com')
+  const emailValue= await emailField.inputValue()
+  expect(emailValue).toEqual('test@test.com')
+
+
+  //getting value from attribute
+  const placeholderValue = await emailField.getAttribute('placeholder')
+  expect(placeholderValue).toEqual('Email')
+
+
+})
+
+test('assertions', async({page})=>{
+
+  //General assertions
+  const basicFormButton =  page.locator('nb-card').filter({hasText:"Basic Form"}).locator('button')
+  expect(basicFormButton).toBeVisible();
+
+  const textOnButton =await basicFormButton.textContent()
+  expect(textOnButton).toEqual("Submit")
+
+  // Locator assetion
+ await expect(basicFormButton).toHaveText("Submit")
+
+ //Soft assetions
+  await expect.soft(basicFormButton).toHaveText('Submit')
+  await basicFormButton.click()
 
 })
 
