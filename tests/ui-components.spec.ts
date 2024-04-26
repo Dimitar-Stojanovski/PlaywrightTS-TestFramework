@@ -106,4 +106,80 @@ test.describe('Forms layout page',()=>{
                  
         }
     })
+
+    test('tooltips', async({page})=>{
+        await page.getByText('Modal & Overlays').click()
+        await page.getByRole('link',{name:'Tooltip'}).click()
+
+        const tooltipCard = page.locator('nb-card',{hasText:'Tooltip Placements'})
+
+        await tooltipCard.getByRole('button',{name:'Top'}).hover()
+
+        //Asserting the text in the tooltip
+        const tooltip = await page.locator('nb-tooltip').textContent()
+        //const tooltiip2 = page.locator('nb-tooltip')
+        expect(tooltip).toEqual('This is a tooltip')
+        //await expect(tooltiip2).toHaveText('This is a tooltip')
+    })
+
+    test('dialog boxes', async({page})=>{
+        await page.getByText('Tables & Data').click()
+        await page.getByRole('link',{name:'Smart Table'}).click()
+
+        //finding the trash item element
+        //await page.getByRole('table').locator('tr',{hasText:"mdo@gmail.com"}).locator('.nb-trash').click()
+        
+        //Using listener to catch the dialog(alert) and accepting it. Playright by default is canceling them
+        page.on('dialog', dialog=>{
+            expect(dialog.message()).toEqual('Are you sure you want to delete?')
+            dialog.accept()
+        })
+
+        //finding the trash item element
+        //await page.getByRole('table').locator('tr',{hasText:"mdo@gmail.com"}).locator('.nb-trash').click()
+        
+        
+        
+        //finding the element  in another way
+        const firstTrashButton = page.getByRole('table').locator('i.nb-trash').first();
+        await firstTrashButton.click()
+        
+        const firstTableRow = page.locator('table > tbody > tr').first()
+        await expect(firstTableRow).not.toHaveText('mdo@gmail.com')
+
+      
+       
+
+    })
+
+    test('Web Tables part 1', async({page}) => {
+        await page.getByText('Tables & Data').click()
+        await page.getByRole('link',{name:'Smart Table'}).click()
+
+        // Getting the text in any kind of row
+        const targetRow = page.getByRole('row',{name:"twitter@outlook.com"})
+        await targetRow.locator('i.nb-edit').click()
+
+        const ageInput = page.locator('input-editor').getByPlaceholder('Age')
+        await ageInput.clear()
+        await ageInput.fill('35')
+        await page.locator('.nb-checkmark').click()
+
+        //get the row of the value based on specific row
+        
+        await page.locator('.ng2-smart-pagination-nav').getByText('2').click()
+        const targetRowById = page.getByRole('row', {name:"11"}).filter({has:page.locator('td').nth(1).getByText('11')})
+        await targetRowById.locator('i.nb-edit').click()
+
+        const emailInput =  page.locator('input-editor').getByPlaceholder('E-mail')
+        await emailInput.clear()
+        await emailInput.fill('test@mail.com')
+        await page.locator('.nb-checkmark').click()
+
+        //Assert the new email
+        await expect(targetRowById.locator('td').nth(5)).toHaveText('test@mail.com')
+
+
+
+    })
     
