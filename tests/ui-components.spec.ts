@@ -182,4 +182,31 @@ test.describe('Forms layout page',()=>{
 
 
     })
+
+    test('Web Tables part 2', async({page}) => {
+
+        await page.getByText('Tables & Data').click()
+        await page.getByRole('link',{name:'Smart Table'}).click()
+
+        // filter that all columns have the searcehd value(Ex Age)
+        var ageInput = page.getByPlaceholder("Age")
+        const ages = ["20", "30", "40","200"]
+
+        for(let age of ages){
+            await ageInput.fill(age)
+            await page.waitForTimeout(500)
+
+            const ageRows = page.locator('tbody tr')
+            for(let row of await ageRows.all()){
+                const cellVallue = await row.locator('td').last().textContent();
+                if(age == "200"){
+                    expect(cellVallue).toEqual(" No data found ")
+                } else{
+                    expect(cellVallue).toEqual(age)
+                }    
+               
+            }
+        }
+
+    })
     
