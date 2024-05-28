@@ -209,4 +209,37 @@ test.describe('Forms layout page',()=>{
         }
 
     })
+
+    test('Date Picker part 1', async({page}) => {
+        await page.getByText('Forms').click()
+        await page.getByRole('link',{name:'Datepicker'}).click()
+
+        const calendarInput = page.getByPlaceholder('Form Picker')
+
+        await calendarInput.click()
+        
+        await page.locator("//*[@class='day-cell ng-star-inserted']").getByText('14', {exact:true}).click()
+
+        await expect(calendarInput).toHaveValue('May 14, 2024')
+    })
+
+    test('Date Picker part 2', async({page}) => {
+        await page.getByText('Forms').click()
+        await page.getByRole('link',{name:'Datepicker'}).click()
+
+        const calendarInput = page.getByPlaceholder('Form Picker')
+
+        await calendarInput.click()
+
+        let date = new Date()
+        date.setDate(date.getDate() +1)
+        const expectedDate = date.getDate().toString()
+        const expectedMonth = date.toLocaleDateString('En-US', {month:'short'})
+        const expectedYear = date.getFullYear()
+        const dateToAssert = `${expectedMonth} ${expectedDate}, ${expectedYear}`
+        
+        await page.locator("//*[@class='day-cell ng-star-inserted']").getByText(expectedDate, {exact:true}).click()
+
+        await expect(calendarInput).toHaveValue(dateToAssert)
+    })
     
