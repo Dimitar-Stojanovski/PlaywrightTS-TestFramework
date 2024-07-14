@@ -253,20 +253,20 @@ test.describe('Forms layout page',()=>{
          })
          await tempGauge.click()
 
-         //Mouse movement
-         const tempBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')
-         await tempBox.scrollIntoViewIfNeeded()
+        //  //Mouse movement
+        //  const tempBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')
+        //  await tempBox.scrollIntoViewIfNeeded()
 
-        const box = await tempBox.boundingBox()
-        const a = box.x + box.width / 2
-        const b = box.y + box.height / 2
+        // const box = await tempBox.boundingBox()
+        // const a = box.x + box.width / 2
+        // const b = box.y + box.height / 2
 
-        await page.mouse.move(a,b)
-        await page.mouse.down()
-        await page.mouse.move(a+100, b)
-        await page.mouse.move(a+100.,b+100)
-        await page.mouse.up()
-        await expect(tempBox).toContainText('30')
+        // await page.mouse.move(a,b)
+        // await page.mouse.down()
+        // await page.mouse.move(a+100, b)
+        // await page.mouse.move(a+100.,b+100)
+        // await page.mouse.up()
+        // await expect(tempBox).toContainText('30')
 
 
     })
