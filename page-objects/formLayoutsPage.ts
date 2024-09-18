@@ -1,8 +1,9 @@
 import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./basePage";
 
-export class FormsLayoutPage{
+export class FormsLayoutPage extends BasePage{
 
-    private readonly page:Page
+    
     private readonly usingTheGridForm:Locator
     private readonly emailInput:Locator
     private readonly passwordInput: Locator
@@ -15,7 +16,7 @@ export class FormsLayoutPage{
     private readonly sumbitButtonInlineForm:Locator
 
     constructor(page:Page){
-        this.page = page
+        super(page)
         this.usingTheGridForm = page.locator('nb-card', {hasText:'Using The Grid'})
         this.emailInput = this.usingTheGridForm.getByRole('textbox',{name:'Email'})
         this.passwordInput = this.usingTheGridForm.getByRole('textbox', {name:'Password'})

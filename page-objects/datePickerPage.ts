@@ -1,11 +1,10 @@
 import { Page,expect } from "@playwright/test";
+import { BasePage } from "./basePage";
 
-export class DatePickerPage{
+export class DatePickerPage extends BasePage{
     
-    private readonly page:Page
-
     constructor(page:Page){
-        this.page = page;
+        super(page)
 
 
     }

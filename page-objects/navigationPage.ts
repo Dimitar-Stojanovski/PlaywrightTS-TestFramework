@@ -1,9 +1,10 @@
 import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./basePage";
 
 
-export class NavigationPage{
+export class NavigationPage extends BasePage{
 
-    readonly page:Page
+    
     readonly formlayoutMenuItem:Locator
     readonly datePickerMenuItem:Locator
     readonly smartTableMenuItem:Locator
@@ -11,7 +12,7 @@ export class NavigationPage{
 
 
     constructor(page:Page){
-        this.page= page
+        super(page)
         this.formlayoutMenuItem = page.getByText('Form Layouts')
         this.datePickerMenuItem = page.getByRole('link',{name:'Datepicker'})
         this.smartTableMenuItem = page.getByRole('link',{name:'Smart Table'})
@@ -20,7 +21,8 @@ export class NavigationPage{
 
     formLayoutPage = async()=>{
         await this.page.getByText('Forms').click()
-        await this.formlayoutMenuItem.click()
+        //await this.formlayoutMenuItem.click()
+        await this.clickOn(this.formlayoutMenuItem)
         
     }
 
