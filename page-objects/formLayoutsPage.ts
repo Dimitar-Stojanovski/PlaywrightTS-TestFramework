@@ -12,7 +12,7 @@ export class FormsLayoutPage{
     private readonly inlineForm:Locator
     private readonly fullNameInput:Locator
     private readonly emainInputInlineForm:Locator
-    
+    private readonly sumbitButtonInlineForm:Locator
 
     constructor(page:Page){
         this.page = page
@@ -22,9 +22,10 @@ export class FormsLayoutPage{
         this.signInButton = this.usingTheGridForm.getByRole('button')
 
         //Inlineform
-        this.inlineForm = page.locator('.inline-form')
+        this.inlineForm = page.locator('nb-card', {hasText:'Inline form'})
         this.fullNameInput = this.inlineForm.getByPlaceholder('Jane Doe')
         this.emainInputInlineForm= this.inlineForm.getByPlaceholder('Email')
+        this.sumbitButtonInlineForm = this.inlineForm.getByRole('button',{name:'Submit'})
 
         
     }
@@ -37,8 +38,22 @@ export class FormsLayoutPage{
         await this.signInButton.click()
 
     }
+    /**
+     * This is a sample method descritpion which is generated with cross and double star signs
+     * @param fullname 
+     * @param email 
+     * @param rememberMe 
+     */
+    async fillOutInlineForm(fullname:string, email:string, rememberMe:boolean){
+        await this.fullNameInput.fill(fullname)
+        await this.emainInputInlineForm.fill(email)
 
-    async fillOutInlineForm(fullname:string, email:string, ){
+        if(rememberMe == true){
+            await this.inlineForm.getByRole('checkbox').check({force:true})
+        }
+        await this.sumbitButtonInlineForm.click()
+        
+
 
     }
 
