@@ -6,14 +6,18 @@ test.beforeEach(async({page})=>{
 })
 
 test.describe('Forms layout page',()=>{
-    
+    test.describe.configure({retries:2}) // this is if we want this particular set of tests to be run more than 1 retry from the playwright.config file.
+
     test.beforeEach(async({page})=>{
         await page.getByText('Forms').click()
         await page.getByRole('link',{name:'Form Layouts'}).click()
     })
 
 
-    test('Input fields', async ({page}) => {
+    test('Input fields', async ({page},testInfo) => {
+       if(testInfo.retry){
+        // If it is in retry mode, we can execute a block of code.
+       }
         const usingTheGridEmailInput = page.locator('nb-card', {hasText:"Using the Grid"}).getByLabel('Email')
 
         await usingTheGridEmailInput.fill("Test2@mail.com")
