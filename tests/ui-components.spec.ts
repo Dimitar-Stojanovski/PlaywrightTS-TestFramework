@@ -1,5 +1,6 @@
 import{test,expect} from '@playwright/test'
-import exp from 'constants'
+
+test.describe.configure({mode:'parallel'}) // only in this spec file the tests will be executed in pararel
 
 test.beforeEach(async({page})=>{
     await page.goto('/')
@@ -7,6 +8,7 @@ test.beforeEach(async({page})=>{
 
 test.describe('Forms layout page',()=>{
     test.describe.configure({retries:2}) // this is if we want this particular set of tests to be run more than 1 retry from the playwright.config file.
+    test.describe.configure({mode:'serial'}) // in this case tests will be executed sequentialy if we have test dependences from one test to another.
 
     test.beforeEach(async({page})=>{
         await page.getByText('Forms').click()
@@ -24,7 +26,7 @@ test.describe('Forms layout page',()=>{
         await usingTheGridEmailInput.clear()
 
         //Using keybord 
-        await usingTheGridEmailInput.pressSequentially('Test2@mail.com', {delay:100})
+        await usingTheGridEmailInput.pressSequentially('Test2@mail.com')
 
         //Assertions
          //generic

@@ -19,7 +19,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 1, //this means that retries are set to be done on CI two times, and 1 is that locally it will have one retry
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : undefined, // when running local is undefined but we can add multiple workers on CI/CD as well on local
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -36,6 +36,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      //fullyParallel:true fully pararel can be added per project but we will need to remove the default fully pararel.
     },
 
     // {
