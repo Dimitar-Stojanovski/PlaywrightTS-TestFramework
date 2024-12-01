@@ -1,12 +1,12 @@
 import {test,expect} from '@playwright/test'
 
 test.beforeEach(async ({page}) => {
-    await page.goto('http://uitestingplayground.com/ajax')
+    await page.goto(process.env.URL)
     await page.getByText('Button Triggering AJAX Request').click()
     
   })
 
-test.skip('auto waiting in playwright', async({page}) => {
+test('auto waiting in playwright', async({page}) => {
     const successBtn = page.locator('.bg-success')
     // //await successBtn.click()
     // //const text= await successBtn.textContent()

@@ -1,15 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
-
+import type {TestOptions} from './test-options';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+ require('dotenv').config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<TestOptions>({
   //timeout:10000,
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -27,13 +27,21 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
      baseURL: 'http://localhost:4200/',
 
+     // we can use trenary condition to re-modify the URLs in the base URL SECTION
+     /*baseURL: process.env.DEV === '1' ? 'http://localhost:4200/'
+            : process.env.STAGE === '1'? 'http://localhost:4201/'
+            :'http://localhost:4201/',*/
+
+     globalsQaURL:"https://www.globalsqa.com/demo-site/draganddrop/#google_vignette",
+     //globalsQaURL: 'https://www.globalsqa.com/demo-site/draganddrop/#google_vignette',
+
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    //video: 'retain-on-failure' will save video only if test fails
-    video:{
-      mode:'retain-on-failure',
-      size:{width:1920,height:1000}
-    }
+    video: 'retain-on-failure' //will save video only if test fails
+    // video:{
+    //   mode:'retain-on-failure',
+    //   size:{width:1920,height:1000}
+    // }
   },
 
   /* Configure projects for major browsers */
@@ -42,6 +50,20 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
       //fullyParallel:true fully pararel can be added per project but we will need to remove the default fully pararel.
+    },
+
+    {
+      name: 'dev',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:4201/' // we can use different urls based on the project we run the tests.
+       },
+    },
+
+    {
+      name: 'stage',
+      use: { ...devices['Desktop Chrome'],
+        baseURL:'http://localhost:4202/'
+       },
     },
 
     // {
