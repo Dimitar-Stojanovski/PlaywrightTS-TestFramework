@@ -32,6 +32,14 @@ test('parametized methods', async({page})=>{
     
     await pm.navigateTo().formLayoutPage()
     await pm.formLayoutPage().submitUsingTheGridFormAndSelectOption(randomEmail,'Welcome 2','Option 1')
+    // add screenshot
+    await page.screenshot({path:'screenshots/formsLayoutsPage.png'})
+    // add screenshot to a specific locator instead of a new page
+    await page.locator('nb-card', {hasText: "Inline form"}).screenshot({path:'screenshots/formsLayoutsPageInlineForm.png'})
+
+    // Save screenshot as a binary
+    const buffoer = await page.screenshot()
+    console.log(buffoer.toString('base64'))
 
     await pm.formLayoutPage().fillOutInlineForm(randomFullName, randomEmail, true)
 
