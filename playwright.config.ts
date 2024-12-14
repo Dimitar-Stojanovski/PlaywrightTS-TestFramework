@@ -12,7 +12,7 @@ import type {TestOptions} from './test-options';
  * EVERYTHING THAT CAN BE CONFIGURED ON THE CONFIG BELLOW CAN BE CONFIGURED ON PROJECT LEVEL AS WELL
  */
 export default defineConfig<TestOptions>({
-  timeout:4000,
+  timeout:40000,
   globalTimeout:60000,
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -54,6 +54,16 @@ export default defineConfig<TestOptions>({
       use: { ...devices['Desktop Chrome'] },
       timeout:20000,
       //fullyParallel:true fully pararel can be added per project but we will need to remove the default fully pararel.
+    },
+
+    {
+      name:'mobile',
+      testMatch:'testMobile.spec.ts',
+      use:{
+        //...devices['iPhone 11 Pro'],
+        viewport: {width:430, height:932}
+        
+      }
     },
 
     // {
