@@ -8,9 +8,12 @@ import type {TestOptions} from './test-options';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * 
+ * EVERYTHING THAT CAN BE CONFIGURED ON THE CONFIG BELLOW CAN BE CONFIGURED ON PROJECT LEVEL AS WELL
  */
 export default defineConfig<TestOptions>({
-  //timeout:10000,
+  timeout:4000,
+  globalTimeout:60000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -37,7 +40,7 @@ export default defineConfig<TestOptions>({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    video: 'retain-on-failure' //will save video only if test fails
+    video: 'off' //will save video only if test fails
     // video:{
     //   mode:'retain-on-failure',
     //   size:{width:1920,height:1000}
@@ -49,27 +52,44 @@ export default defineConfig<TestOptions>({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      timeout:20000,
       //fullyParallel:true fully pararel can be added per project but we will need to remove the default fully pararel.
     },
 
-    {
-      name: 'dev',
-      use: { ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:4201/' // we can use different urls based on the project we run the tests.
-       },
-    },
-
-    {
-      name: 'stage',
-      use: { ...devices['Desktop Chrome'],
-        baseURL:'http://localhost:4202/'
-       },
-    },
+    // {
+    //   name: 'dev',
+    //   use: { ...devices['Desktop Chrome'],
+    //     baseURL: 'http://localhost:4201/' // we can use different urls based on the project we run the tests.
+    //    },
+    // },
 
     // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
+    //   name: 'stage',
+    //   use: { ...devices['Desktop Chrome'],
+    //     baseURL:'http://localhost:4202/'
+    //    },
     // },
+
+    {
+      name: 'firefox',
+      use: {
+        browserName:'firefox',
+        video:{
+          mode:'retain-on-failure',
+         size:{width:1920,height:1000}
+         //The videos will be retain only for firefox
+        }
+       },
+      
+    },
+
+    {
+      name:'pageObjectFullScreen',
+      testMatch: 'useOfPageObjects.spec.ts',
+      use:{
+        //viewport:{width:1920, height:1080}
+      }
+    }
 
     // {
     //   name: 'webkit',
