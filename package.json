@@ -7,7 +7,8 @@
     "test-dev": "npx playwright test --project=chromium --headed",
     "test-ui": "npx playwright test --ui",
     "dev-env": "npx playwright test --project=dev",
-    "test-env-url": "URL=http://uitestingplayground.com/ajax npx playwright test autowaiting.spec.ts --project:chromium"
+    "test-env-url": "URL=http://uitestingplayground.com/ajax npx playwright test autowaiting.spec.ts --project:chromium",
+    "allure-report": "allure generate ./allure-results -o ./allure-results/allure-report --clean"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "@faker-js/faker": "^9.2.0",
     "@playwright/test": "^1.42.1",
     "@types/node": "^20.11.28",
+    "allure-playwright": "^3.0.7",
     "dotenv": "^16.4.5"
   }
 }
