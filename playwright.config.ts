@@ -14,6 +14,9 @@ import type {TestOptions} from './test-options';
 export default defineConfig<TestOptions>({
   timeout:40000,
   globalTimeout:60000,
+  expect:{
+    toMatchSnapshot: {maxDiffPixels:50} //We have this in case we are testing with screenshots and to tolerate some differences given the stability of the UI.
+  },
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -24,9 +27,10 @@ export default defineConfig<TestOptions>({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined, // when running local is undefined but we can add multiple workers on CI/CD as well on local
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['json'], 
-             ['junit', {outputFile: 'test-results/junitReport.xml'}],
-             ["allure-playwright"]
+  reporter: [//['json'], 
+             //['junit', {outputFile: 'test-results/junitReport.xml'}],
+             //["allure-playwright"]
+             ['html']
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

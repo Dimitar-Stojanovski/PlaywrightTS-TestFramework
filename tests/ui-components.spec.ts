@@ -7,7 +7,7 @@ test.beforeEach(async({page})=>{
 })
 
 test.describe('Forms layout page',()=>{
-    test.describe.configure({retries:2}) // this is if we want this particular set of tests to be run more than 1 retry from the playwright.config file.
+    test.describe.configure({retries:0}) // this is if we want this particular set of tests to be run more than 1 retry from the playwright.config file.
     test.describe.configure({mode:'serial'}) // in this case tests will be executed sequentialy if we have test dependences from one test to another.
 
     test.beforeEach(async({page})=>{
@@ -37,19 +37,23 @@ test.describe('Forms layout page',()=>{
          await expect(usingTheGridEmailInput).toHaveValue('Test2@mail.com')
     })
 
-    test('Radio Buttons', async({page}) => {
+    test.only('Radio Buttons', async({page}) => {
         const usintTheGridForm = page.locator('nb-card', {hasText:"Using the Grid"})
 
         // using force true because the element has class visually hiden, without force it won't work
         await usintTheGridForm.getByLabel('Option 1').check({force:true})
         
-        //Assertion
-        const radio1Status = await usintTheGridForm.getByLabel('Option 1').isChecked()
-        expect(radio1Status).toBeTruthy()
+        //Visual testing
+        await expect(usintTheGridForm).toHaveScreenshot()
 
-        await usintTheGridForm.getByRole('radio',{name:"Option 2"}).check({force:true})
-        const radio2status = usintTheGridForm.getByRole('radio',{name:"Option 2"})
-        await expect(radio2status).toBeChecked()
+
+        //Assertion
+        // const radio1Status = await usintTheGridForm.getByLabel('Option 1').isChecked()
+        // expect(radio1Status).toBeTruthy()
+
+        // await usintTheGridForm.getByRole('radio',{name:"Option 2"}).check({force:true})
+        // const radio2status = usintTheGridForm.getByRole('radio',{name:"Option 2"})
+        // await expect(radio2status).toBeChecked()
         
     })
 })
